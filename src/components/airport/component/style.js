@@ -20,7 +20,7 @@ export const HeaderWrapper = styled.div`
 `;
 export const Title = styled.div`
   font-size: 5rem;
-  font-weight: 700;
+  font-weight: 900;
   color: ${colors.colorsPrimary};
   span {
     color: ${colors.colorSecondary};
@@ -44,7 +44,7 @@ export const FilterWrapper = styled.div`
 `;
 export const Type = styled.div`
   width: 60%;
-  font-weight: 700;
+  font-weight: 900;
   color: ${colors.colorsPrimary};
   @media (max-width: 860px) {
     width: 100%;
@@ -52,7 +52,7 @@ export const Type = styled.div`
 `;
 export const Search = styled.div`
   width: 40%;
-  font-weight: 700;
+  font-weight: 900;
   color: ${colors.colorsPrimary};
   @media (max-width: 860px) {
     width: 100%;
@@ -92,7 +92,7 @@ export const Input = styled.input`
 //table styles
 export const TableWrapper = styled.div`
   width: 100%;
-  max-height: 450px;
+  height: 450px;
   overflow: auto;
 `;
 
@@ -103,7 +103,14 @@ export const FooterWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+`;
+
+export const FooterText = styled.div`
   span {
-    font-weight: 700;
+    font-weight: 900;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 0.9rem;
   }
 `;

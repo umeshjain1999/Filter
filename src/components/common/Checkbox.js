@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { CheckIcon } from "./icon";
+import { colors } from "./styles";
 const CheckboxContainer = styled.div`
   display: inline-block;
   vertical-align: middle;
@@ -35,9 +36,9 @@ const StyledCheckbox = styled.div`
     box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.3);
   }
 
-  ${CheckIcon} {
+  /* ${CheckIcon} {
     visibility: ${(props) => (props.checked ? "visible" : "hidden")};
-  }
+  } */
 `;
 
 const Checkbox = ({ className, checked, ...props }) => (
