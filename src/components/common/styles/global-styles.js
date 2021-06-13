@@ -1,15 +1,15 @@
 import { createGlobalStyle } from "styled-components";
 import colors from "./colors";
 export const GlobalStyle = createGlobalStyle`
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;900&display=swap');
 html {
     height: 100%;
   }
 
   body {
-		font-family: 'Montserrat', 'PT Sans Caption', 'Arial',  sans-serif;
+    font-family: 'Montserrat', sans-serif;
     margin: 0;
     font-size: 1rem;
-    line-height: 1.2;
     color: ${colors.colorsPrimary};
     height: 100%;
     background: ${colors.bgSecondary};

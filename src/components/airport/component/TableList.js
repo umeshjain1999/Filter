@@ -30,7 +30,7 @@ const TableList = () => {
               return (
                 <tr key={row.id}>
                   {columnsConfig.map(({ name }) => {
-                    return <td>{formatValue(name, row[name])}</td>;
+                    return <td key={name}>{formatValue(name, row[name])}</td>;
                   })}
                 </tr>
               );

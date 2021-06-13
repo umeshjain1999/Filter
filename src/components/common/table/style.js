@@ -7,13 +7,12 @@ const StyledTable = styled.table`
     max-width: 100%;
     border-spacing: 0;
     border-collapse: collapse;
-    white-space: ${props.whiteSpace || ""};
 
     th,
     td {
       color: ${colors.colorsPrimary};
       display: table-cell;
-      vertical-align: ${props.alignTop && "top"};
+      vertical-align: top;
     }
 
     thead {
@@ -21,7 +20,7 @@ const StyledTable = styled.table`
       td {
         text-align: left;
         padding: 2rem 1rem;
-        font-weight: 700;
+        font-weight: 900;
         background: ${colors.colorSecondary};
       }
     }

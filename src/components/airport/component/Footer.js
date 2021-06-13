@@ -1,5 +1,5 @@
 import React from "react";
-import { FooterWrapper } from "./style";
+import { FooterWrapper, FooterText } from "./style";
 import { RightArrowIcon, LeftArrowIcon } from "../../common/icon";
 import { MainContext } from "../container/Container";
 const Footer = () => {
@@ -14,13 +14,13 @@ const Footer = () => {
       {count && count > perPageCount ? (
         <React.Fragment>
           <LeftArrowIcon onClick={() => dispatch({ type: "PREV_PAGE" })} />
-          <div>
+          <FooterText>
             Showing{" "}
             <span>
               {first}-{last}
             </span>{" "}
             of <span>{count}</span> results{" "}
-          </div>
+          </FooterText>
           <RightArrowIcon onClick={() => dispatch({ type: "NEXT_PAGE" })} />
         </React.Fragment>
       ) : (

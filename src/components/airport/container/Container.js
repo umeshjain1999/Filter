@@ -5,22 +5,24 @@ import { columnsJson } from "./columns";
 export const MainContext = React.createContext();
 
 const initialState = {
-  // type: {
+  //types
   small: false,
   medium: false,
   large: false,
   heliport: false,
   closed: false,
   inYourFav: false,
-  // },
+  // count of selected type
+  selectedType: 0,
+  // search input
   search: "",
+  searchData: null,
   allData: [],
   dataList: [],
   dataListCount: 0,
   columnList: columnsJson,
   currentPage: 1,
-  perPageCount: 4,
-  //tracking table data
+  perPageCount: 8,
   first: 1,
   last: 4,
 };
@@ -28,7 +30,12 @@ const initialState = {
 const onPageChange = (state, page) => {
   const indexOfLast = page * state.perPageCount;
   const indexOfFirst = indexOfLast - state.perPageCount;
-  const dataList = airportJson.slice(indexOfFirst, indexOfLast);
+  let dataList = [];
+  if (state.searchData) {
+    dataList = state.searchData.slice(indexOfFirst, indexOfLast);
+  } else {
+    dataList = state.allData.slice(indexOfFirst, indexOfLast);
+  }
   let first, last;
   first = indexOfFirst + 1;
   last = indexOfLast;
@@ -46,14 +53,26 @@ const onPageChange = (state, page) => {
     last: last,
   };
 };
-
+//based on fields based
 const searchFilter = (findValue, data, fields) => {
   const aData = data.filter((item) => {
     const fData = fields.map((fItem) => {
       return item[fItem];
     });
-    let check = fData.toString();
-    if (check.includes(findValue)) return item;
+    let check = fData && fData.toString().toLowerCase();
+    return check.includes(findValue.toLowerCase());
+  });
+  return aData;
+};
+
+//exclude passed fields
+const searchFilterReverse = (findValue, data, fields) => {
+  const aData = data.filter((item) => {
+    const fData = fields.map((fItem) => {
+      return item[fItem];
+    });
+    let check = fData && fData.toString().toLowerCase();
+    return !check.includes(findValue.toLowerCase());
   });
   return aData;
 };
@@ -67,43 +86,89 @@ const onSearch = (state, e) => {
     return {
       ...state,
       [e.target.name]: findValue,
-      allData: aData,
+      searchData: aData,
       dataListCount: aData.length,
       dataList: aData.slice(0, state.perPageCount),
       currentPage: 1,
     };
   } else {
-    return {
-      ...state,
-      [e.target.name]: findValue,
-      allData: airportJson,
-      dataListCount: airportJson.length,
-      dataList: airportJson.slice(0, state.perPageCount),
-      currentPage: 1,
-    };
+    if (state.selectedType <= 0) {
+      return {
+        ...state,
+        [e.target.name]: findValue,
+        allData: airportJson,
+        searchData: null,
+        dataListCount: airportJson.length,
+        dataList: airportJson.slice(0, state.perPageCount),
+        currentPage: 1,
+      };
+    } else {
+      return {
+        ...state,
+        [e.target.name]: findValue,
+        allData: state.allData,
+        searchData: null,
+        dataListCount: state.allData.length,
+        dataList: state.allData.slice(0, state.perPageCount),
+        currentPage: 1,
+      };
+    }
   }
 };
 
-const onType = (state, e) => {
+const onType = (state, e, lookFor) => {
   if (e.target.checked) {
-    const aData = searchFilter(e.target.name, state.allData, ["type"]);
-    return {
-      ...state,
-      [e.target.name]: e.target.checked,
-      allData: aData,
-      dataListCount: aData.length,
-      dataList: aData.slice(0, 4),
-      currentPage: 1,
-    };
+    const fData = state.searchData || airportJson;
+    const aData = searchFilter(lookFor, fData, ["type"]);
+    if (state.selectedType < 1) {
+      return {
+        ...state,
+        [e.target.name]: e.target.checked,
+        selectedType: 1,
+        allData: aData,
+        dataListCount: aData.length,
+        dataList: aData.slice(0, 4),
+        currentPage: 1,
+      };
+    } else {
+      const updatedData = [...state.allData, ...aData];
+      return {
+        ...state,
+        [e.target.name]: e.target.checked,
+        selectedType: state.selectedType + 1,
+        allData: updatedData,
+        dataListCount: updatedData.length,
+        dataList: updatedData.slice(0, 4),
+        currentPage: 1,
+      };
+    }
   } else {
-    return {
-      ...state,
-      [e.target.name]: e.target.checked,
-      allData: airportJson,
-      dataListCount: airportJson.length,
-      dataList: airportJson.slice(0, 4),
-      currentPage: 1,
-    };
+    if (state.selectedType <= 1) {
+      const fData = state.searchData || airportJson;
+
+      return {
+        ...state,
+        [e.target.name]: e.target.checked,
+        selectedType: 0,
+        allData: fData,
+        dataListCount: fData.length,
+        dataList: fData.slice(0, 4),
+        currentPage: 1,
+      };
+    } else {
+      const fData = state.searchData || state.allData;
+
+      const aData = searchFilterReverse(lookFor, fData, ["type"]);
+      return {
+        ...state,
+        [e.target.name]: e.target.checked,
+        selectedType: state.selectedType - 1,
+        allData: aData,
+        dataListCount: aData.length,
+        dataList: aData.slice(0, 4),
+        currentPage: 1,
+      };
+    }
   }
 };
 
@@ -111,11 +176,8 @@ const reducer = (state, action) => {
   switch (action.type) {
     case "FILTER_TYPE":
       const eventA = action.value;
-      // return onType(state, eventA);
-      return {
-        ...state,
-        [eventA.target.name]: eventA.target.checked,
-      };
+      const lookFor = action.lookFor;
+      return onType(state, eventA, lookFor);
     case "FILTER_SEARCH":
       const eventB = action.value;
       return onSearch(state, eventB);
