@@ -36,18 +36,27 @@ export const FilterWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  /* gap: 1rem; */
-  padding: 1rem 0;
+  padding: 1rem 0 2rem 0;
+  @media (max-width: 860px) {
+    flex-direction: column;
+    gap: 1rem;
+  }
 `;
 export const Type = styled.div`
   width: 60%;
   font-weight: 700;
   color: ${colors.colorsPrimary};
+  @media (max-width: 860px) {
+    width: 100%;
+  }
 `;
 export const Search = styled.div`
   width: 40%;
   font-weight: 700;
   color: ${colors.colorsPrimary};
+  @media (max-width: 860px) {
+    width: 100%;
+  }
 `;
 export const Label = styled.div`
   font-size: 1.5rem;
@@ -61,6 +70,14 @@ export const CheckBoxGroup = styled.div`
   justify-content: flex-start;
   gap: 1rem;
   text-transform: capitalize;
+  label {
+    cursor: pointer;
+  }
+  @media (max-width: 860px) {
+    font-size: 0.9rem;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
 `;
 
 export const Input = styled.input`
@@ -75,14 +92,14 @@ export const Input = styled.input`
 //table styles
 export const TableWrapper = styled.div`
   width: 100%;
-  padding: 1rem 0;
+  max-height: 450px;
   overflow: auto;
 `;
 
 //footer styles
 export const FooterWrapper = styled.div`
   width: 100%;
-  padding: 1rem 0;
+  padding: 2rem 0 1rem 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
