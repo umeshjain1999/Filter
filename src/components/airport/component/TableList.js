@@ -4,26 +4,9 @@ import { MainContext } from "../container/Container";
 import { TableWrapper } from "./style";
 const TableList = () => {
   const mainContext = React.useContext(MainContext);
-  const dispatch = mainContext?.dispatch;
-  //All json data
-  const allData = mainContext?.filter?.dataList;
-  //To track pagination
-  const currentPage = mainContext?.filter?.currentPage || 1;
   //Columns details
   const columnsConfig = mainContext?.filter?.columnList || [];
-  //Pagination operation
-  const indexOfLast = currentPage * 4;
-  const indexOfFirst = indexOfLast - 4;
-  const dataList = allData.slice(indexOfFirst, indexOfLast);
-
-  React.useEffect(() => {
-    if (currentPage >= 1) {
-      dispatch({
-        type: "UPDATED_INDEX",
-        value: { first: indexOfFirst, last: indexOfLast },
-      });
-    }
-  }, [currentPage]);
+  const dataList = mainContext?.filter?.dataList;
   const formatValue = (key, value) => {
     if (key === "elevation") {
       return `${Math.round(value / 30.48)} ft`;
@@ -42,16 +25,29 @@ const TableList = () => {
           </tr>
         </thead>
         <tbody>
-          {dataList &&
+          {dataList && dataList.length ? (
             dataList.map((row) => {
               return (
-                <tr>
+                <tr key={row.id}>
                   {columnsConfig.map(({ name }) => {
                     return <td>{formatValue(name, row[name])}</td>;
                   })}
                 </tr>
               );
-            })}
+            })
+          ) : (
+            <tr
+              style={{
+                background: "white",
+                width: "100%",
+                opacity: "0.6",
+                padding: "1rem",
+                fontStyle: "italic",
+              }}
+            >
+              <td style={{ margin: "2rem 0" }}>No matching data found</td>
+            </tr>
+          )}
         </tbody>
       </Table>
     </TableWrapper>

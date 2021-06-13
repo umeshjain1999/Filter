@@ -56,6 +56,16 @@ const StyledTable = styled.table`
       }
     }
 
+    thead {
+      tr {
+        th {
+          top: 0;
+          position: sticky;
+          z-index: 100;
+        }
+      }
+    }
+
     @media (min-width: 1170px) {
       th,
       td {
