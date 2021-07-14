@@ -22,7 +22,7 @@ const initialState = {
   dataListCount: 0,
   columnList: columnsJson,
   currentPage: 1,
-  perPageCount: 8,
+  perPageCount: 4,
   first: 1,
   last: 4,
 };
